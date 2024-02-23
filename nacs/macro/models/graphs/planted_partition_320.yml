@@ -1,0 +1,10 @@
+model:
+  kwargs:
+    latent_graph_kwargs:
+      mediator_latent_kwargs:
+        graph_preset: "planted-partition"
+        graph_generator_kwargs:
+          l: 10
+          k: 32
+          p_in: 0.9
+          p_out: 0.05

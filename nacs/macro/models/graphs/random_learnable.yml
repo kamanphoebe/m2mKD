@@ -1,0 +1,24 @@
+model:
+  kwargs:
+    latent_graph_kwargs:
+      input_latent_kwargs:
+        graph_preset: null
+        learnable_signatures: true
+      mediator_latent_kwargs:
+        graph_preset: null
+        learnable_signatures: true
+      output_latent_kwargs:
+        graph_preset: null
+        learnable_signatures: true
+      propagator_kwargs:
+        latent_attention_kwargs:
+          kernel_kwargs:
+            truncation: 0.9
+          kernel_type: DotProductKernel
+          mask_attn_scores_with_affinities: true
+      read_out_kwargs:
+        latent_attention_kwargs:
+          kernel_kwargs:
+            truncation: 0.9
+          kernel_type: DotProductKernel
+          mask_attn_scores_with_affinities: true

@@ -1,0 +1,8 @@
+.ipynb*
+_experiments/
+experiments/
+*__pycache__*
+debug_configs/
+wandb/
+ori_fulldata/
+students/

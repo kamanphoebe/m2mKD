@@ -1,0 +1,30 @@
+data:
+  __speedrun__: purge
+  dataset:
+    kwargs:
+      input_size: 64
+      # Augmentations
+      color_jitter: 0.4
+      aa: "rand-m9-mstd0.5-inc1"
+      train_interpolation: bicubic
+      # Random Erase
+      reprob: 0.25
+      remode: "pixel"
+      recount: 1
+      resplit: false
+    name: TINY-IMNET
+  loader:
+    kwargs:
+      batch_size: 128
+      num_workers: 10
+      pin_memory: true
+    val_batch_size_multiplier: 1.5
+  sampler:
+    repeated_augments: 3
+
+training:
+  num_epochs: 400
+
+scheduler:
+  kwargs:
+    warmup_epochs: 10

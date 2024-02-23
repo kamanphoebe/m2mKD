@@ -1,0 +1,59 @@
+model:
+  __speedrun__: purge
+  name: NeuralCompiler
+  kwargs:
+    input_dim: 3
+    input_tokenizer_kwargs:
+      capacity_preset: femto
+      positional_grid_kwargs:
+        dim: 64
+        grid_size:
+        - 4
+        - 4
+    input_tokenizer_type: ConvNeXtImageTokenizer
+    latent_graph_kwargs:
+      code_dim: 384
+      code_noise_scale: 0.05
+      ffn_capacity_factor: 1.3333
+      head_dim: 64
+      input_latent_kwargs: null
+      layer_scale_initial_value: 0.1
+      mediator_latent_kwargs:
+        graph_generator_kwargs:
+          k: 32
+          l: 8
+          p_in: 0.9
+          p_out: 0.01
+          truncation: 0.9
+        graph_preset: planted-partition
+      num_heads: 6
+      num_input_latents: 64
+      num_iterations: 8
+      num_mediator_latents: 256
+      num_output_latents: 1
+      output_latent_kwargs: null
+      path_drop_prob: 0.1
+      use_geglu: true
+      qkv_bias_in_attention: false
+      propagator_kwargs:
+        latent_attention_kwargs:
+          share_layernorm: true
+          kernel_kwargs:
+            truncation: 0.9
+          kernel_type: DotProductKernel
+      read_in_kwargs:
+        num_heads: 1
+        path_drop_prob: 0.0
+        include_residual_in_read_in_attention: true
+      read_out_kwargs:
+        include_residual_in_latent_attention: false
+        pre_output_layernorm: false
+        path_drop_prob: 0.0
+      share_propagator_weights: false
+      signature_dim: 64
+    latent_graph_type: LatentGraph
+    output_dim: 200
+    output_tokenizer_kwargs: null
+    output_tokenizer_type: FirstSlotAsLogits
+    simplified_interface: true
+    state_dim: 384

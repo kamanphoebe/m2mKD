@@ -1,0 +1,9 @@
+model:
+  kwargs:
+    latent_graph_kwargs:
+      num_output_latents: 64
+      read_out_kwargs:
+        use_head: false
+    output_tokenizer_type: "OutputLatentPooling"
+    output_tokenizer_kwargs:
+      softmax_type: "gumbel"

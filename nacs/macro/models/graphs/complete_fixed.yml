@@ -1,0 +1,16 @@
+model:
+  kwargs:
+    latent_graph_kwargs:
+      mediator_latent_kwargs:
+        __speedrun__: purge
+        graph_preset: "complete"
+        learnable_signatures: false
+      input_latent_kwargs:
+        __speedrun__: purge
+        graph_preset: "complete"
+        learnable_signatures: false
+      output_latent_kwargs:
+        __speedrun__: purge
+        graph_preset: "complete"
+        learnable_signatures: false
+

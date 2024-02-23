@@ -1,0 +1,87 @@
+data:
+  dataset:
+    name: NLVR-PATCHES
+    kwargs:
+      __speedrun__: purge
+      input_size: 224
+      use_transform: False
+  ood_dataset: null
+  loader:
+    kwargs:
+      batch_size: 128
+      num_workers: 10
+      pin_memory: true
+    val_batch_size_multiplier: 1.5
+  sampler:
+    repeated_augments: null
+
+model:
+  __speedrun__: purge
+  name: PerceiverIO
+  kwargs:
+    depth: 8
+    queries_dim: 320 #384
+    logits_dim: 2
+    num_latents: 320
+    latent_dim: 384
+    cross_heads: 1
+    latent_heads: 6
+    cross_dim_head: 64
+    latent_dim_head: 64
+    weight_tie_layers: false
+    decoder_ff: true
+    as_classifier: true
+    from_bchw: false
+    use_tokenizer: true
+    tokenizer_name: ClipTokenizer
+    tokenizer_kwargs:
+      text_dim: 512
+      image_dim: 768
+      num_text_tokens: 64
+      num_image_tokens: 50
+      projection_dim: 128
+      position_dim: 64
+      category_dim: 64
+
+
+optimizer:
+  name: adamw
+  kwargs:
+    # This is the base lr for global batch-size of 512
+    lr: 0.00005 
+    weight_decay: 0.01
+    momentum: 0.9
+    eps: 1.0e-8
+    filter_bias_and_bn: true
+  no_weight_decay_filter: "param.dim() <= 1 or name.endswith('bias') or name.endswith('signatures_') or name.endswith('grid') or name.endswith('codes_')"
+
+scheduler:
+  name: cosine
+  kwargs:
+    warmup_lr: 1.0e-8 #1.0e-6
+    min_lr: 1.0e-7 # 1.0e-5
+    warmup_epochs: 20
+    # These args don't really have an effect; they're just here to make timm happy
+    decay_rate: 0.1
+    cooldown_epochs: 10
+
+training:
+  num_epochs: 420
+  use_amp: true
+  ema:
+    use: true
+    decay: 0.99996
+    device: cpu
+  clip_grad: null
+  checkpoint_every: 6
+
+criterion:
+  mixup_and_cutmix:
+    use: false
+  label_smoothing: 0.0
+  graph_sparsity:
+    use: false
+
+wandb:
+  use: true
+  log_every: 20

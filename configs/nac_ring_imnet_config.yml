@@ -1,0 +1,131 @@
+criterion:
+  graph_sparsity:
+    hinge: 0.4
+    type: signature_hinge_repulsion
+    use: true
+    weight: 0.1
+  label_smoothing: 0.1
+  mixup_and_cutmix:
+    kwargs:
+      cutmix_alpha: 1.0
+      cutmix_minmax: null
+      mixup_alpha: 0.8
+      mode: batch
+      prob: 1.0
+      switch_prob: 0.5
+    use: true
+data:
+  __speedrun__: purge
+  dataset:
+    kwargs:
+      aa: rand-m9-mstd0.5-inc1
+      color_jitter: 0.4
+      data_path: /PATH/TO/IMAGENET
+      input_size: 224
+      recount: 1
+      remode: pixel
+      reprob: 0.25
+      resplit: false
+      train_interpolation: bicubic
+    name: IMNET
+  loader:
+    kwargs:
+      batch_size: 32
+      num_workers: 10
+      pin_memory: true
+    val_batch_size_multiplier: 1.5
+  ood_dataset:
+    kwargs:
+      data_path: /PATH/TO/IMAGENET-R
+      input_size: 224
+    name: IMNET-R
+  sampler:
+    repeated_augments: 3
+git_rev: dbb7335e9dadfb2b15e9a0d26e9b0872e867dba4
+model:
+  __speedrun__: purge
+  kwargs:
+    input_dim: 3
+    input_tokenizer_kwargs:
+      num_stages: 2
+      positional_grid_kwargs:
+        dim: 64
+        grid_size:
+        - 28
+        - 28
+    input_tokenizer_type: ConvNeXtImageTokenizer
+    latent_graph_kwargs:
+      code_dim: 512
+      code_noise_scale: 0.05
+      ffn_capacity_factor: 1.0
+      head_dim: 64
+      input_latent_kwargs: null
+      layer_scale_initial_value: 0.1
+      mediator_latent_kwargs:
+        graph_generator_kwargs:
+          clique_size: 64
+          num_cliques: 12
+        graph_preset: ring-of-cliques
+      mod_fc_kwargs:
+        add_one_to_scale: true
+        learnable_scale_gain: true
+        scale_gain: 0.1
+      num_heads: 8
+      num_input_latents: 192
+      num_iterations: 8
+      num_mediator_latents: 768
+      num_output_latents: 64
+      output_latent_kwargs: null
+      path_drop_prob: 0.1
+      propagator_kwargs:
+        latent_attention_kwargs:
+          kernel_kwargs:
+            stochastic_kernel: true
+            stochastic_sampling_temperature: 0.5
+            truncation: 0.9
+          kernel_type: DotProductKernel
+          share_layernorm: true
+      qkv_bias_in_attention: false
+      read_in_kwargs:
+        include_residual_in_read_in_attention: true
+        num_heads: 8
+        path_drop_prob: 0.0
+      read_out_kwargs:
+        include_residual_in_latent_attention: false
+        path_drop_prob: 0.0
+        pre_output_layernorm: false
+        use_head: false
+      share_propagator_weights: false
+      signature_dim: 64
+      use_code_noise_in_latent_seeder: true
+      use_geglu: true
+    latent_graph_type: LatentGraph
+    output_dim: 1000
+    output_tokenizer_kwargs:
+      softmax_type: gumbel
+    output_tokenizer_type: OutputLatentPooling
+    simplified_interface: true
+    state_dim: 512
+    # Uncomment these two lines to load parameters learned using m2mKD.
+    # student_state_dict_dir: /PATH/TO/STUDENT
+    # student_type: imagenet
+  name: NeuralCompiler
+optimizer:
+  kwargs:
+    eps: 1.0e-08
+    filter_bias_and_bn: false
+    lr: 0.0012
+    weight_decay: 0.05
+  name: AdamW
+scheduler:
+  kwargs:
+    cooldown_epochs: 0
+    decay_rate: 1.0
+    min_lr: 4.0e-05
+    sched: cosine
+    warmup_epochs: 25
+    warmup_lr: 1.0e-06
+training:
+  clip_grad: null
+  num_epochs: 110
+  use_amp: true

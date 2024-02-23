@@ -1,0 +1,122 @@
+data:
+  dataset:
+    kwargs:
+      input_size: 224
+      # Augmentations
+      color_jitter: 0.4
+      aa: "rand-m9-mstd0.5-inc1"
+      train_interpolation: bicubic
+      # Random Erase
+      reprob: 0.25
+      remode: "pixel"
+      recount: 1
+      resplit: false
+    name: IMNET
+  ood_dataset:
+    name: IMNET-R
+  loader:
+    kwargs:
+      batch_size: 64
+      num_workers: 10
+      pin_memory: true
+    val_batch_size_multiplier: 1.5
+  sampler:
+    repeated_augments: 3
+
+model:
+  name: NeuralCompiler
+  kwargs:
+    input_dim: 3
+    output_dim: 1000
+    state_dim: 384
+    input_tokenizer_type: "ConvNeXtImageTokenizer"
+    input_tokenizer_kwargs:
+      capacity_preset: tiny
+      positional_grid_kwargs:
+        dim: 64
+        grid_size: [14, 14]
+    latent_graph_type: "LatentGraph"
+    latent_graph_kwargs:
+      code_dim: 384
+      signature_dim: 64
+      num_input_latents: 64
+      num_mediator_latents: 256
+      num_output_latents: 1
+      num_iterations: 8
+      share_propagator_weights: false
+      num_heads: 6
+      head_dim: 64
+      path_drop_prob: 0.1
+      layer_scale_initial_value: 0.1
+      ffn_capacity_factor: 1.3333
+      code_noise_scale: 0.05
+      use_code_noise_in_latent_seeder: true
+      input_latent_kwargs: null
+      mediator_latent_kwargs:
+        graph_preset: watts-strogatz
+        graph_generator_kwargs:
+          truncation: 0.9
+      output_latent_kwargs: null
+      read_in_kwargs:
+        path_drop_prob: 0.0
+      propagator_kwargs:
+        latent_attention_kwargs:
+          kernel_type: "DotProductKernel"
+          kernel_kwargs:
+            truncation: 0.9
+      read_out_kwargs: null
+    output_tokenizer_type: "FirstSlotAsLogits"
+    output_tokenizer_kwargs: null
+    simplified_interface: true
+
+optimizer:
+  name: adamw
+  kwargs:
+    # This is the base lr for global batch-size of 512
+    lr: 0.0005
+    weight_decay: 0.05
+    momentum: 0.9
+    eps: 1.0e-8
+    filter_bias_and_bn: true
+  no_weight_decay_filter: "param.dim() <= 1 or name.endswith('bias') or name.endswith('signatures_') or name.endswith('grid') or name.endswith('codes_')"
+
+scheduler:
+  name: cosine
+  kwargs:
+    warmup_lr: 1.0e-6
+    min_lr: 1.0e-5
+    warmup_epochs: 5
+    # These args don't really have an effect; they're just here to make timm happy
+    decay_rate: 0.1
+    cooldown_epochs: 10
+
+training:
+  num_epochs: 105
+  use_amp: true
+  ema:
+    use: true
+    decay: 0.99996
+    device: cpu
+  clip_grad: null
+  checkpoint_every: 6
+
+criterion:
+  mixup_and_cutmix:
+    use: true
+    kwargs:
+      mixup_alpha: 0.8
+      cutmix_alpha: 1.0
+      cutmix_minmax: null
+      prob: 1.0
+      switch_prob: 0.5
+      mode: batch
+  label_smoothing: 0.1
+  graph_sparsity:
+    type: "signature_hinge_repulsion"
+    use: true
+    weight: 0.1
+    hinge: 0.4
+
+wandb:
+  use: true
+  log_every: 20

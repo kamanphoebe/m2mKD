@@ -1,0 +1,89 @@
+model:
+  __speedrun__: purge
+  name: NeuralCompiler
+  kwargs:
+    input_dim: 3
+    output_dim: 200
+    state_dim: 384
+    input_tokenizer_type: "ConvNeXtImageTokenizer"
+    input_tokenizer_kwargs:
+      capacity_preset: femto
+      positional_grid_kwargs:
+        dim: 64
+        grid_size: [4, 4]
+    latent_graph_type: "LatentGraph"
+    latent_graph_kwargs:
+      code_dim: 384
+      signature_dim: 64
+      num_input_latents: 320
+      num_mediator_latents: 320
+      num_output_latents: 1
+      num_iterations: 8
+      share_propagator_weights: false
+      num_heads: 6
+      head_dim: 64
+      path_drop_prob: 0.0
+      layer_scale_initial_value: null
+      ffn_capacity_factor: 4
+      code_noise_scale: null
+      use_code_noise_in_latent_seeder: false
+      disable_input_mediator_communication: true
+      use_input_states_as_mediator_states: true
+      enable_input_output_communication: false
+      latent_seeder_kwargs:
+        use_state_noise: false
+        use_code_as_mean_state: true
+      input_latent_kwargs:
+        graph_preset: null
+        learnable_signatures: true
+      mediator_latent_kwargs:
+        graph_preset: planted-partition
+        graph_generator_kwargs:
+          k: 32
+          l: 10
+          p_in: 0.9
+          p_out: 0.01
+          truncation: 0.9
+        learnable_signatures: true
+        learnable_codes: false
+      output_latent_kwargs:
+        graph_preset: null
+        learnable_signatures: true
+      read_in_kwargs:
+        path_drop_prob: 0.0
+        num_heads: 1
+        read_in_layer_scale_initial_value: null
+        include_residual_in_read_in_attention: true
+        read_in_attention_kwargs:
+          qkv_bias: false
+        ffn_kwargs:
+          use_geglu: true
+      propagator_kwargs:
+        latent_attention_kwargs:
+          mask_attn_scores_with_affinities: true
+          share_layernorm: true
+          qkv_bias: false
+          kernel_type: "DotProductKernel"
+          kernel_kwargs:
+            truncation: 0.9
+        ffn_kwargs:
+          use_geglu: true
+      read_out_kwargs:
+        num_heads: 1
+        include_residual_in_latent_attention: false
+        pre_output_layernorm: false
+        latent_attention_kwargs:
+          mask_attn_scores_with_affinities: true
+          share_layernorm: false
+          qkv_bias: false
+        ffn_kwargs:
+          use_geglu: true
+      mod_fc_cls: FC
+    output_tokenizer_type: "FirstSlotAsLogits"
+    output_tokenizer_kwargs: null
+    simplified_interface: true
+  # We will have some unused params
+  find_unused_parameters_in_ddp: true
+
+optimizer:
+  no_weight_decay_filter: "param.dim() <= 1 or name.endswith('bias') or name.endswith('signatures_') or name.endswith('grid')"

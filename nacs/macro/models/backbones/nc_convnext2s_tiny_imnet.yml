@@ -1,0 +1,6 @@
+model:
+  kwargs:
+    input_tokenizer_kwargs:
+      num_stages: 2
+      positional_grid_kwargs:
+        grid_size: [8, 8]

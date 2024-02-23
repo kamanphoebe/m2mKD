@@ -1,0 +1,43 @@
+share_kwargs:
+  state_dim: 512
+  code_dim: 512
+  layer_scale_initial_value: 0.1
+  use_geglu: true
+  qkv_bias_in_attention: false
+  ffn_capacity_factor: 1.0
+  mod_fc_kwargs:
+    add_one_to_scale: true
+    learnable_scale_gain: true
+    scale_gain: 0.1
+mediator: 
+  num_heads: 8
+  head_dim: 64
+  path_drop_prob: 0.1
+  latent_attention_kwargs: 
+    share_layernorm: true
+readin:
+  num_heads: 8
+  head_dim: 64
+  input_dim: 3
+  tokenizer_kwargs:
+    capacity_preset: tiny
+    num_stages: 2
+    positional_grid_kwargs:
+      dim: 64
+      grid_size:
+      - 28
+      - 28
+  tokenizer_type: ConvNeXtImageTokenizer
+  include_residual_in_read_in_attention: true
+  path_drop_prob: 0.0
+readout:
+  num_heads: 8
+  head_dim: 64
+  include_residual_in_latent_attention: false
+  path_drop_prob: 0.0
+  pre_output_layernorm: false
+  output_dim: 1000
+  use_head: false
+  tokenizer_kwargs: 
+    softmax_type: gumbel
+  tokenizer_type: OutputLatentPooling

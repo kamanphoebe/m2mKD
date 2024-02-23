@@ -1,0 +1,10 @@
+criterion:
+  graph_sparsity:
+    type: "stochastic_block_model_regularization"
+    kwargs:
+      num_clusters: 10
+      p_in: 0.9
+      p_out: 0.05
+      regularize_input_latents: false
+      regularize_mediator_latents: true
+      regularize_output_latents: false

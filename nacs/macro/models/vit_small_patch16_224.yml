@@ -1,0 +1,8 @@
+model:
+  __speedrun__: purge
+  name: vit_small_patch16_224
+  kwargs: {}
+
+criterion:
+  graph_sparsity:
+    use: false

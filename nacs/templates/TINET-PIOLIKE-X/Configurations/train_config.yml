@@ -1,0 +1,153 @@
+data:
+  dataset:
+    kwargs:
+      aa: rand-m9-mstd0.5-inc1
+      color_jitter: 0.4
+      input_size: 64
+      recount: 1
+      remode: pixel
+      reprob: 0.25
+      resplit: false
+      train_interpolation: bicubic
+    name: TINY-IMNET
+  loader:
+    kwargs:
+      batch_size: 128
+      num_workers: 10
+      pin_memory: true
+    val_batch_size_multiplier: 1.5
+  sampler:
+    repeated_augments: 3
+
+criterion:
+  graph_sparsity:
+    hinge: 0.6
+    type: signature_distribution_regularization
+    use: true
+    weight: 0.1
+  label_smoothing: 0.1
+  mixup_and_cutmix:
+    kwargs:
+      cutmix_alpha: 1.0
+      cutmix_minmax: null
+      mixup_alpha: 0.8
+      mode: batch
+      prob: 1.0
+      switch_prob: 0.5
+    use: true
+
+model:
+  find_unused_parameters_in_ddp: true
+  kwargs:
+    input_dim: 3
+    input_tokenizer_kwargs:
+      capacity_preset: femto
+      num_stages: 2
+      positional_grid_kwargs:
+        dim: 64
+        grid_size:
+        - 8
+        - 8
+    input_tokenizer_type: ConvNeXtImageTokenizer
+    latent_graph_kwargs:
+      code_dim: 384
+      code_noise_scale: null
+      disable_input_mediator_communication: true
+      enable_input_output_communication: false
+      ffn_capacity_factor: 4
+      head_dim: 64
+      input_latent_kwargs:
+        graph_preset: complete
+        learnable_signatures: false
+      latent_seeder_kwargs:
+        use_code_as_mean_state: true
+        use_state_noise: false
+      layer_scale_initial_value: null
+      mediator_latent_kwargs:
+        graph_preset: complete
+        learnable_codes: false
+        learnable_signatures: false
+      mod_fc_cls: FC
+      num_heads: 6
+      num_input_latents: 320
+      num_iterations: 8
+      num_mediator_latents: 320
+      num_output_latents: 1
+      output_latent_kwargs:
+        graph_preset: complete
+        learnable_signatures: false
+      path_drop_prob: 0.0
+      propagator_kwargs:
+        ffn_kwargs:
+          use_geglu: true
+        latent_attention_kwargs:
+          kernel_kwargs:
+            truncation: 0.9
+          kernel_type: DotProductKernel
+          mask_attn_scores_with_affinities: false
+          qkv_bias: false
+          share_layernorm: true
+      read_in_kwargs:
+        ffn_kwargs:
+          use_geglu: true
+        include_residual_in_read_in_attention: true
+        num_heads: 1
+        path_drop_prob: 0.0
+        read_in_attention_kwargs:
+          qkv_bias: false
+        read_in_layer_scale_initial_value: null
+      read_out_kwargs:
+        ffn_kwargs:
+          use_geglu: true
+        include_residual_in_latent_attention: false
+        latent_attention_kwargs:
+          mask_attn_scores_with_affinities: false
+          qkv_bias: false
+          share_layernorm: false
+        num_heads: 1
+        pre_output_layernorm: false
+      share_propagator_weights: false
+      signature_dim: 64
+      use_code_noise_in_latent_seeder: false
+      use_input_states_as_mediator_states: true
+    latent_graph_type: LatentGraph
+    output_dim: 200
+    output_tokenizer_kwargs: null
+    output_tokenizer_type: FirstSlotAsLogits
+    simplified_interface: true
+    state_dim: 384
+  name: NeuralCompiler
+
+optimizer:
+  kwargs:
+    eps: 1.0e-08
+    filter_bias_and_bn: true
+    lr: 0.0005
+    momentum: 0.9
+    weight_decay: 0.05
+  name: adamw
+  no_weight_decay_filter: param.dim() <= 1 or name.endswith('bias') or name.endswith('signatures_')
+    or name.endswith('grid')
+
+scheduler:
+  kwargs:
+    cooldown_epochs: 10
+    decay_rate: 0.1
+    min_lr: 1.0e-05
+    warmup_epochs: 10
+    warmup_lr: 1.0e-06
+  name: cosine
+
+training:
+  checkpoint_every: 6
+  clip_grad: null
+  ema:
+    decay: 0.99996
+    device: cpu
+    use: true
+  num_epochs: 400
+  use_amp: true
+
+wandb:
+  log_every: 20
+  use: true

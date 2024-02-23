@@ -1,0 +1,6 @@
+model:
+  kwargs:
+    output_dim: 200
+    input_tokenizer_kwargs:
+      positional_grid_kwargs:
+        grid_size: [4, 4]

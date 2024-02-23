@@ -1,0 +1,6 @@
+.idea
+*.sh
+log_dir/
+distillation/models/
+pretrained_models/
+__pycache__/

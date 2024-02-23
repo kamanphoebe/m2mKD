@@ -1,0 +1,32 @@
+model:
+  __speedrun__: purge
+  name: PerceiverIO
+  kwargs:
+    depth: 8
+    queries_dim: 320 #384
+    logits_dim: 2
+    num_latents: 320
+    latent_dim: 384
+    cross_heads: 1
+    latent_heads: 6
+    cross_dim_head: 64
+    latent_dim_head: 64
+    weight_tie_layers: false
+    decoder_ff: true
+    as_classifier: true
+    from_bchw: false
+    use_tokenizer: true
+    tokenizer_name: ClipTokenizer
+    tokenizer_kwargs:
+      text_dim: 512
+      image_dim: 768
+      num_text_tokens: 64
+      num_image_tokens: 50
+      projection_dim: 128
+      position_dim: 64
+      category_dim: 64
+
+
+criterion:
+  graph_sparsity:
+    use: false
