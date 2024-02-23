@@ -1,5 +1,7 @@
 # Training NAC using m2mKD
 
+In case you want to have a quick try about m2mKD, we have provided the checkpoints of NAC student modules for Tiny-ImageNet which can be downloaded from [here](https://huggingface.co/kamanphoebe/m2mKD). With these checkpoints, you can skip the preparation and m2mKD phase, and directly enter the End-to-end training phase.
+
 - **Datasets**: 
     - Preparation/m2mKD: ImageNet-1k
     - End-to-end: Tiny-ImageNet, ImageNet-1k 
@@ -7,11 +9,6 @@
 - **Teacher model:** DeiT-Huge (32 layers)
 - **Student model:** NAC (10 layers)
 - **Num of modules:** 10
-
-In case you want to have a quick try about m2mKD, we have provided the checkpoints of NAC student modules for Tiny-ImageNet which can be downloaded from [here](https://huggingface.co/kamanphoebe/m2mKD). With these checkpoints, you can skip the preparation and m2mKD phase, and directly enter the End-to-end training phase.
-
-Before starting, please add the paths to the environment variable: \
-`export PYTHONPATH="/WORD_DIR/m2mKD/deep_incubation:/WORD_DIR/m2mKD/nacs:$PYTHONPATH"`
 
 ## Preparation phase
 

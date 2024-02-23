@@ -8,6 +8,28 @@ We propose a general module-to-module knowledge distillation (m2mKD) method for 
 
 ![pipeline](./images/pipeline.png)
 
+## Setup
+
+```bash
+git clone https://github.com/kamanphoebe/m2mKD.git
+cd m2mKD
+conda create -n m2mkd python=3.11
+conda activate m2mkd
+pip install -r requirements.txt
+# fastmoe
+git clone https://github.com/laekov/fastmoe.git
+cd fastmoe 
+python setup.py install
+cd ..
+# speedrun (use the dev branch)
+git clone https://github.com/inferno-pytorch/speedrun.git
+cd speedrun
+git checkout dev
+python setup.py install
+# Add paths to environment variables.
+export PYTHONPATH="$PWD/deep_incubation:$PWD/nacs:$PYTHONPATH
+```
+
 ## Usage
 
 Our experiments are conducted on NAC and V-MoE models. The instructions for training these models can be found in [TRAIN-NAC.md](./TRAIN-NAC.md) and [TRAIN-MOE.md](./TRAIN-MOE.md), respectively. If you would like to have a quick try about m2mKD, we have provided the checkpoints of NAC student modules for Tiny-ImageNet. See [TRAIN-NAC.md](./TRAIN-NAC.md) for details.

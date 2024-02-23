@@ -7,9 +7,6 @@
 - **Student model:** V-MoE-Base (12 MoE layers, 8 experts)
 - **Num of modules:** 4
 
-Before starting, please add the paths to the environment variable: \
-`export PYTHONPATH="/WORD_DIR/m2mKD/deep_incubation:/WORD_DIR/m2mKD/nacs:$PYTHONPATH"`
-
 ## Preparation phase
 
 The preparation phase is to train a teacher model from scratch. If you would like to instead employ the released checkpoint of Deep Incubation as the teahcer model, you can follow the steps below to obtain the teacher modules and then directly jump to the m2mKD phase:
