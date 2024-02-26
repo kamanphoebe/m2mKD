@@ -10,29 +10,44 @@ We propose a general module-to-module knowledge distillation (m2mKD) method for 
 
 ## Setup
 
+Setup the environment as follows: 
+
 ```bash
 git clone https://github.com/kamanphoebe/m2mKD.git
 cd m2mKD
 conda create -n m2mkd python=3.11
 conda activate m2mkd
 pip install -r requirements.txt
+
 # fastmoe
 git clone https://github.com/laekov/fastmoe.git
 cd fastmoe 
 python setup.py install
 cd ..
+
 # speedrun (use the dev branch)
 git clone https://github.com/inferno-pytorch/speedrun.git
 cd speedrun
 git checkout dev
 python setup.py install
+
 # Add paths to environment variables.
 export PYTHONPATH="$PWD/deep_incubation:$PWD/nacs:$PYTHONPATH
 ```
 
 ## Usage
 
-Our experiments are conducted on NAC and V-MoE models. The instructions for training these models can be found in [TRAIN-NAC.md](./TRAIN-NAC.md) and [TRAIN-MOE.md](./TRAIN-MOE.md), respectively. If you would like to have a quick try about m2mKD, we have provided the checkpoints of NAC student modules for Tiny-ImageNet. See [TRAIN-NAC.md](./TRAIN-NAC.md) for details.
+Our experiments are conducted on NAC and V-MoE models. The instructions for training these models can be found in [TRAIN-NAC.md](./TRAIN-NAC.md) and [TRAIN-MOE.md](./TRAIN-MOE.md), respectively. 
+
+If you are interested in trying out m2mKD quickly on NACs, you can utilize our released checkpoints of either the teacher modules or the student modules. See [TRAIN-NAC.md](./TRAIN-NAC.md) for details.
+
+## Released checkpoints
+
+The model checkpoints are available at [Hugging Face](https://huggingface.co/kamanphoebe/m2mKD), including:
+- `nac_scale_tinyimnet.pth`/`nac_scale_imnet.pth`: NAC model with a scale-free prior trained using m2mKD.
+- `vmoe_base.pth`: V-MoE-Base model trained using m2mKD.
+- `FT_huge`: a directory containing DeiT-Huge teacher modules for NAC model training.
+- `nac_tinyimnet_students`: a directory containing NAC student modules for Tiny-ImageNet.
 
 ## Acknowledgement
 

@@ -9,7 +9,7 @@
 
 ## Preparation phase
 
-The preparation phase is to train a teacher model from scratch. If you would like to instead employ the released checkpoint of Deep Incubation as the teahcer model, you can follow the steps below to obtain the teacher modules and then directly jump to the m2mKD phase:
+The preparation phase involves training a teacher model from scratch. If you prefer to use the released checkpoint of Deep Incubation as the teacher model, you can follow the steps below to obtain the teacher modules and proceed directly to the m2mKD phase:
 1. Download the [checkpoint](https://huggingface.co/nzl-thu/Deep-Incubation).
 2. `cd m2mKD ; mkdir ./log_dir/FT_large/ ; mv /PATH/TO/CKPT ./log_dir/FT_large/finished_checkpoint.pth`
 3. Run `python split_teacher.py` to split the teacher model into modules.
@@ -25,7 +25,8 @@ torchrun --standalone --nnodes=1 --nproc_per_node=8 main.py \
 --batch_size 256 --epochs 300 --drop-path 0 --use_amp 1
 
 # 2. Modular training (MT)
-# Incubate teacher modules using the meta model trained in the previous step. Each module can be incubated in parallel.
+# Incubate teacher modules using the meta model trained in the previous step. 
+# Each module can be incubated in parallel.
 torchrun --standalone --nnodes=1 --nproc_per_node=8 main.py \
 --phase MT --model vit_large_patch16_224  --meta_ckpt_path ./log_dir/PT_large/finished_checkpoint.pth \
 --idx 0 --divided_depths 6 1 1 1 --output_dir ./log_dir/MT_large_0 \
@@ -43,7 +44,7 @@ torchrun --standalone --nnodes=1 --nproc_per_node=8 main.py \
 
 ## m2mKD phase
 
-After obtaining the teacher modules, run m2mKD for each teaching pair which can be processed in parallel.
+After obtaining the teacher modules, you can run m2mKD for each teaching pair. The pairs can be processed in parallel.
 
 ```bash
 # Note that the idx of the last pair should be -1. 
@@ -71,7 +72,7 @@ torchrun --standalone --nnodes=1 --nproc_per_node=8 main.py \
 
 ## Few-shot adaptation
 
-The command below can be used to evaluate the few-shot adaptation performance on CIFAR-100 or CUB-2011. In our experiments, we keep the number of validation samples to be three times of the training samples (i.e. $\text{val\_sample} = 3 \times \text{n\_shot}$).
+The command below can be used to evaluate the few-shot adaptation performance on CIFAR-100 or CUB-2011. In our experiments, we maintain the number of validation samples to be three times the number of training samples (i.e. $\text{val-sample} = 3 \times \text{n-shot}$).
 
 ```bash
 torchrun --standalone --nnodes=1 --nproc_per_node=1 main.py \

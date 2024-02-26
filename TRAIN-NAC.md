@@ -1,6 +1,6 @@
 # Training NAC using m2mKD
 
-In case you want to have a quick try about m2mKD, we have provided the checkpoints of NAC student modules for Tiny-ImageNet which can be downloaded from [here](https://huggingface.co/kamanphoebe/m2mKD). With these checkpoints, you can skip the preparation and m2mKD phase, and directly enter the End-to-end training phase.
+If you would like to quickly try out m2mKD on NACs, we have provided the checkpoints of the teacher modules or the student modules for Tiny-ImageNet, which can be downloaded from [here](https://huggingface.co/kamanphoebe/m2mKD/nac_tinyimnet_students). You can either use the checkpoints of the teacher modules to skip the preparation phase, or use the checkpoints of the student modules to skip both the preparation and the m2mKD phase.
 
 - **Datasets**: 
     - Preparation/m2mKD: ImageNet-1k
@@ -12,7 +12,7 @@ In case you want to have a quick try about m2mKD, we have provided the checkpoin
 
 ## Preparation phase
 
-The preparation phase is to train a teacher model from scratch. 
+The preparation phase involves training a teacher model from scratch.
 
 The following commands used in this phase are similar to the [instructions](https://github.com/LeapLabTHU/Deep-Incubation/blob/master/TRAINING.md) provided by Deep Incubation. You may check it out for more details.
 
@@ -25,16 +25,17 @@ torchrun --standalone --nnodes=1 --nproc_per_node=8 main.py \
 --batch_size 256 --epochs 300 --drop-path 0 --use_amp 1
 
 # 2. Modular training (MT)
-# Incubate teacher modules using the meta model trained in the previous step. Each module can be incubated in parallel.
+# Incubate teacher modules using the meta model trained in the previous step. 
+# Each module can be incubated in parallel.
 # Note that the first and last sub-modules contain 4 layers, and the remaining sub-modules comprise 3 layers.
 torchrun --standalone --nnodes=1 --nproc_per_node=8 main.py \
 --phase MT --model vit_huge_patch14_224  --meta_ckpt_path ./log_dir/PT_huge/finished_checkpoint.pth \
 --idx 0 --divided_depths 4 1 1 1 1 1 1 1 1 1 --output_dir ./log_dir/MT_huge_0 \
-# --idx 1 --divided_depths 1 3 1 1 1 1 1 1 1 1 --output_dir ./log_dir/MT_large_1 \
-# --idx 2 --divided_depths 1 1 3 1 1 1 1 1 1 1 --output_dir ./log_dir/MT_large_2 \
+# --idx 1 --divided_depths 1 3 1 1 1 1 1 1 1 1 --output_dir ./log_dir/MT_huge_1 \
+# --idx 2 --divided_depths 1 1 3 1 1 1 1 1 1 1 --output_dir ./log_dir/MT_huge_2 \
 # ...
-# --idx 8 --divided_depths 1 1 1 1 1 1 1 1 3 1 --output_dir ./log_dir/MT_large_8 \
-# --idx 9 --divided_depths 1 1 1 1 1 1 1 1 1 4 --output_dir ./log_dir/MT_large_9 \
+# --idx 8 --divided_depths 1 1 1 1 1 1 1 1 3 1 --output_dir ./log_dir/MT_huge_8 \
+# --idx 9 --divided_depths 1 1 1 1 1 1 1 1 1 4 --output_dir ./log_dir/MT_huge_9 \
 --batch_size 128 --update_freq 2 --epochs 100 --drop-path 0.1 --use_amp 1
 
 # 3. Assembly & Fine-tuning (FT)
@@ -46,7 +47,7 @@ torchrun --standalone --nnodes=1 --nproc_per_node=8 main.py \
 
 ## m2mKD phase
 
-After obtaining the teacher modules, run m2mKD for each teaching pair which can be processed in parallel.
+After obtaining the teacher modules, you can run m2mKD for each teaching pair. The pairs can be processed in parallel.
 
 ```bash
 # Note that the idx of the last pair should be -1. 
@@ -86,7 +87,7 @@ torchrun --standalone --nnodes=1 --nproc_per_node=8 train_supervised.py experime
 
 ## Few-shot adaptation
 
-The command below can be used to evaluate the few-shot adaptation performance on CIFAR-100. In our experiments, we keep the number of validation samples to be three times of the training samples (i.e. $\text{val\_sample} = 3 \times \text{n\_shot}$). These settings can be modified in `nac_scale_fewshot_config.yml`.
+The command below can be used to evaluate the few-shot adaptation performance on CIFAR-100. In our experiments, we maintain the number of validation samples to be three times the number of training samples (i.e. $\text{val-sample} = 3 \times \text{n-shot}$). These settings can be modified in `nac_scale_fewshot_config.yml`.
 
 ```bash
 mkdir -p ./nacs/experiments/nac_scale_fewshot/Configurations
