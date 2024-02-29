@@ -1,6 +1,6 @@
 # m2mKD
 
-This repository contains the source code for [m2mKD: Module-to-Module Knowledge Distillation for Modular Transformers]().
+This repository contains the source code for [m2mKD: Module-to-Module Knowledge Distillation for Modular Transformers](https://arxiv.org/abs/2402.16918).
 
 ## Overview
 
@@ -32,7 +32,7 @@ git checkout dev
 python setup.py install
 
 # Add paths to environment variables.
-export PYTHONPATH="$PWD/deep_incubation:$PWD/nacs:$PYTHONPATH
+export PYTHONPATH="$PWD/deep_incubation:$PWD/nacs:$PYTHONPATH"
 ```
 
 ## Usage
@@ -57,4 +57,12 @@ Our implementation is mainly based on [Deep-Incubation](https://github.com/LeapL
 
 If you use the code, please cite our paper:
 ```
+@misc{lo2024m2mkd,
+    title={m2mKD: Module-to-Module Knowledge Distillation for Modular Transformers}, 
+    author={Ka Man Lo and Yiming Liang and Wenyu Du and Yuantao Fan and Zili Wang and Wenhao Huang and Lei Ma and Jie Fu},
+    year={2024},
+    eprint={2402.16918},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG}
+}
 ```
