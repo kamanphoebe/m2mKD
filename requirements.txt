@@ -1,5 +1,5 @@
 aadict==0.2.3
-aiohttp==3.8.5
+aiohttp==3.9.4
 aiosignal==1.3.1
 appdirs==1.4.4
 asset==0.6.13
