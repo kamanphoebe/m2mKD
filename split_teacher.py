@@ -16,6 +16,7 @@ def get_args_parser():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Split teacher model pretrained by Deep Incubation', parents=[get_args_parser()])
     args = parser.parse_args()
+    print(f'Creating model {args.model}')
     model = create_model(args.model, divided_depths=args.divided_depths)
     ckpt = torch.load(args.ckpt_path)
     model.load_state_dict(ckpt['model'])

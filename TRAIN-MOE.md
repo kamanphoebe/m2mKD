@@ -66,7 +66,9 @@ The final phase is to load the learned parameters into the student model and per
 torchrun --standalone --nnodes=1 --nproc_per_node=8 main.py \
 --phase FT --model vmoe_base --incubation_models ./log_dir/m2mKD_vmoe_*/finished_checkpoint.pth \
 --divided_depths 3 3 3 3 --output_dir ./log_dir/FT_vmoe \
---moe_pos 0 1 2 3 4 5 6 7 8 9 10 11 --num_expert 8 --pre_stitch_pos 3 6 9 --post_stitch_pos 2 5 8 --stitch_dim 1024 \
+--moe_pos 0 1 2 3 4 5 6 7 8 9 10 11 --num_expert 8 \
+# Uncomment the following line if you want to preserve the stitch layers in the final model.
+# --pre_stitch_pos 3 6 9 --post_stitch_pos 2 5 8 --stitch_dim 1024 \
 --batch_size 128 --update_freq 1 --epochs 100 --warmup-epochs 0 --clip-grad 1 --drop-path 0.1 --use_amp 1
 ```
 
