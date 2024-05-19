@@ -85,3 +85,12 @@ torchrun --standalone --nnodes=1 --nproc_per_node=1 main.py \
 # --data-set CUB-FS --k_way 8 --n_shot 5 --val_sample 15 \
 --update_freq 1 --epochs 100 --lr 0.002 --seed 1 
 ```
+
+## Downstream task: COCO object detection & instance segmentation
+
+We follow identical training receipt of [ViTDet](https://github.com/open-mmlab/mmdetection/tree/main/projects/ViTDet) to fine-tune the V-MoE-Base model pretrained by m2mKD for the downstream tasks. To prepare the data, you have to first download the COCO dataset (2017 version) and put the files under the `detectron2/projects/ViTDet/datasets/coco` directory. 
+
+```bash
+cd detectron2/projects/ViTDet
+../../tools/lazyconfig_train_net.py --config-file configs/COCO/mask_rcnn_vmoe_b_m2mkd.py --num-gpus 8
+```
