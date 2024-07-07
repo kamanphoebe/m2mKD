@@ -1,8 +1,9 @@
 # Training V-MoE-Base using m2mKD
 
 - **Datasets**: 
-    - Preparation/m2mKD/End-to-end: ImageNet-1k 
-    - Few-shot: CIFAR-100, CUB-2011
+    - Preparation/m2mKD/End-to-end: [ImageNet-1k](https://www.image-net.org/download.php)
+    - Few-shot: [CIFAR-100](https://www.cs.toronto.edu/~kriz/cifar.html), [CUB-2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)
+    - Downstream task: [COCO 2017](https://cocodataset.org/#download)
 - **Teacher model:** DeiT-Large (24 layers)
 - **Student model:** V-MoE-Base (12 MoE layers, 8 experts)
 - **Num of modules:** 4
@@ -84,4 +85,13 @@ torchrun --standalone --nnodes=1 --nproc_per_node=1 main.py \
 --data-set CIFAR100-FS --k_way 8 --n_shot 5 --val_sample 15 \
 # --data-set CUB-FS --k_way 8 --n_shot 5 --val_sample 15 \
 --update_freq 1 --epochs 100 --lr 0.002 --seed 1 
+```
+
+## Downstream task: COCO object detection & instance segmentation
+
+We follow identical training receipt of [ViTDet](https://github.com/open-mmlab/mmdetection/tree/main/projects/ViTDet) to fine-tune the V-MoE-Base model pretrained by m2mKD for the downstream tasks. To prepare the data, you have to first download the COCO dataset (2017 version) and put the files under the `detectron2/projects/ViTDet/datasets/coco` directory. 
+
+```bash
+cd detectron2/projects/ViTDet
+../../tools/lazyconfig_train_net.py --config-file configs/COCO/mask_rcnn_vmoe_b_m2mkd.py --num-gpus 8
 ```
