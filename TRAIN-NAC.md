@@ -3,9 +3,9 @@
 If you would like to quickly try out m2mKD on NACs, we have provided the checkpoints of the teacher modules or the student modules for Tiny-ImageNet, which can be downloaded from [here](https://huggingface.co/kamanphoebe/m2mKD/nac_tinyimnet_students). You can either use the checkpoints of the teacher modules to skip the preparation phase, or use the checkpoints of the student modules to skip both the preparation and the m2mKD phase.
 
 - **Datasets**: 
-    - Preparation/m2mKD: ImageNet-1k
-    - End-to-end: Tiny-ImageNet, ImageNet-1k 
-    - Few-shot: CIFAR-100
+    - Preparation/m2mKD: [ImageNet-1k](https://www.image-net.org/download.php)
+    - End-to-end: [Tiny-ImageNet](https://www.kaggle.com/datasets/akash2sharma/tiny-imagenet), ImageNet-1k, [Tiny-ImageNet-R](https://zenodo.org/records/6653675) (optional), [ImageNet-R](https://github.com/hendrycks/imagenet-r) (optional) 
+    - Few-shot: [CIFAR-100](https://www.cs.toronto.edu/~kriz/cifar.html)
 - **Teacher model:** DeiT-Huge (32 layers)
 - **Student model:** NAC (10 layers)
 - **Num of modules:** 10

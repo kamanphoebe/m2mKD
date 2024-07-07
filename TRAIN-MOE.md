@@ -1,8 +1,9 @@
 # Training V-MoE-Base using m2mKD
 
 - **Datasets**: 
-    - Preparation/m2mKD/End-to-end: ImageNet-1k 
-    - Few-shot: CIFAR-100, CUB-2011
+    - Preparation/m2mKD/End-to-end: [ImageNet-1k](https://www.image-net.org/download.php)
+    - Few-shot: [CIFAR-100](https://www.cs.toronto.edu/~kriz/cifar.html), [CUB-2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)
+    - Downstream task: [COCO 2017](https://cocodataset.org/#download)
 - **Teacher model:** DeiT-Large (24 layers)
 - **Student model:** V-MoE-Base (12 MoE layers, 8 experts)
 - **Num of modules:** 4
